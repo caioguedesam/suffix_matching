@@ -16,7 +16,7 @@ class Tree:
         text += '$'
         self.root = Node()
         # Make first node as longest suffix possible (entire text)
-        self.root.children[text[0]] = Node(text)
+        self.root.children[text[0]] = Node(text, 0, len(text) - 1)
         print('adding ' + text[0:])
 
         # Add rest of suffixes from longest to shortest
@@ -24,12 +24,9 @@ class Tree:
             print('adding ' + text[i:])
             # Always start at root when adding new node
             currentNode = self.root
-            # j = currentNode substring start index
             j = i
             while j < len(text):
-                # Check for an edge to 
                 if text[j] in currentNode.children:
-                    # Get children associated with character in position j
                     child = currentNode.children[text[j]]
                     childSubstring = child.substring
                     # Walk along edge until mismatch or edge label ends
@@ -42,24 +39,24 @@ class Tree:
                         j = k
                     else:
                         # Mismatch
-                        # Separate rests without shared prefix
                         childRest = childSubstring[k-j]
                         insertedRest = text[k]
-                        # Create new midpoint to split with current shared prefix
                         mid = Node(childSubstring[:k-j])
+                        mid.start = child.start
+                        mid.end = mid.start + (k - j - 1)
 
-                        # Midpoint now has two new children
-                        mid.children[insertedRest] = Node(text[k:])
+                        mid.children[insertedRest] = Node(text[k:], k, len(text) - 1)
                         mid.children[childRest] = child
+                        child.start = mid.end + 1
 
                         child.substring = childSubstring[k-j:]
                         currentNode.children[text[j]] = mid
                 else:
                     # Fell off, make a new node hanging from current
-                    currentNode.children[text[j]] = Node(text[j:])
+                    currentNode.children[text[j]] = Node(text[j:], j, len(text) - 1)
     
     def PrintTree(self):
         self.root.PrintNode()
 
-t = Tree('abcxab')
+t = Tree('minimize')
 t.PrintTree()
