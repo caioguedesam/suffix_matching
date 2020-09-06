@@ -1,4 +1,5 @@
 import re
+import tree
 
 def parseGenome(genome) -> str:
     split = genome.split('\n', 1)
@@ -7,5 +8,7 @@ def parseGenome(genome) -> str:
     return genome
 
 file = open("sarscov2.fasta", "r")
-string = parseGenome(file.read())
-print(string)
+genomeParsed = parseGenome(file.read())
+t = tree.Tree('abcxab')
+t.PrintTree()
+t.Search()
