@@ -1,5 +1,5 @@
 class Node:
-    def __init__(self, substring = '', start = -1, end = -1, parent = None):
+    def __init__(self, start = -1, end = -1, parent = None):
         self.start = start
         self.end = end
         self.children = {}
@@ -9,13 +9,23 @@ class Node:
     def GetChildCount(self):
         return len(self.children.values())
 
+    # Descobre a substring acumulada desde a raiz até esse nó, com posição de início e fim.
     def GetAccumulatedSubstring(self, text):
         currentSubstring = ''
         currentNode = self
+        #start = self.start
+        # Volta na árvore até a raiz.
         while(currentNode.parent != None):
+            # Adiciona a substring acumulada e o novo início da substring.
             currentSubstring = text[currentNode.start:currentNode.end + 1] + currentSubstring
+            #start = currentNode.start
+            #print(start)
+
+            # Continua a operação no próximo nó pai.
             currentNode = currentNode.parent
-        return currentSubstring
+
+        # Retorna a substring e sua posição de início.
+        return [currentSubstring, self.end - len(currentSubstring) + 1, self.end]
 
     def PrintNode(self, pre = ''):
         nodeString = pre + ' (' + str(self.start) + ',' + str(self.end) + ')'
@@ -33,40 +43,43 @@ class Tree:
         self.root = Node()
 
         # Primeiro, coloca o primeiro sufixo que é o texto inteiro.
-        self.root.children[text[0]] = Node(text, 0, len(text) - 1)
+        self.root.children[text[0]] = Node(0, len(text) - 1)
 
-        # Add rest of suffixes from longest to shortest
+        # Depois, adiciona todos os sufixos restantes um por um (algoritmo ingênuo).
         for i in range(1, len(text) - 1):
-            # Always start at root when adding new node
             currentNode = self.root
             j = i
             while j < len(text):
+                # Caso haja algum nó para continuar o sufixo saindo do nó atual:
                 if text[j] in currentNode.children:
+                    # Nós indicados com o primeiro caractere, que não se repete em árvores de sufixo.
                     child = currentNode.children[text[j]]
-                    childSubstring = text[child.start:(child.end + 1)]
-                    # Walk along edge until mismatch or edge label ends
+                    # Descobre até onde vai o sufixo atual nesse nó.
                     k = j + 1
-                    while k - j < len(childSubstring) and text[k] == childSubstring[k-j]:
+                    while k - j < (child.end - child.start + 1) and text[k] == text[child.start + (k - j)]:
                         k += 1
-                    if k - j == len(childSubstring):
-                        # Edge label ended, keep searching on child
+                    # Caso o sufixo atual seja consumido por esse nó, continua procurando no próximo.
+                    if k - j == (child.end - child.start + 1):
                         currentNode = child
                         j = k
+                    # Caso o contrário, houve um casamento parcial entre o sufixo do nó e o adicionado.
                     else:
-                        # Mismatch
-                        childRest = childSubstring[k-j]
+                        # Nesse caso, faz um nó pai com o casamento parcial e adiciona
+                        # o restante a adicionar e o sufixo que sobrou do nó como filhos desse novo nó.
+                        childRest = text[child.start + (k-j)]
                         insertedRest = text[k]
-                        mid = Node(childSubstring[:k-j], child.start, child.start + (k - j - 1), currentNode)
+                        mid = Node(child.start, child.start + (k - j - 1), currentNode)
 
-                        mid.children[insertedRest] = Node(text[k:], k, len(text) - 1, mid)
+                        mid.children[insertedRest] = Node(k, len(text) - 1, mid)
                         mid.children[childRest] = child
+                        
                         child.parent = mid
                         child.start = mid.end + 1
 
                         currentNode.children[text[j]] = mid
+                # Caso não tenha nenhum nó que continue o sufixo, cria um novo nó com o restante. 
                 else:
-                    # Fell off, make a new node hanging from current
-                    currentNode.children[text[j]] = Node(text[j:], j, len(text) - 1, currentNode)
+                    currentNode.children[text[j]] = Node(j, len(text) - 1, currentNode)
 
     
     # Função para busca recursiva na árvore à procura do nó interno com a maior profundidade.
