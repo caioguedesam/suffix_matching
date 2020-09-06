@@ -68,15 +68,15 @@ class Tree:
                         # o restante a adicionar e o sufixo que sobrou do nó como filhos desse novo nó.
                         childRest = text[child.start + (k-j)]
                         insertedRest = text[k]
-                        mid = Node(child.start, child.start + (k - j - 1), currentNode)
+                        newParent = Node(child.start, child.start + (k - j - 1), currentNode)
 
-                        mid.children[insertedRest] = Node(k, len(text) - 1, mid)
-                        mid.children[childRest] = child
-                        
-                        child.parent = mid
-                        child.start = mid.end + 1
+                        newParent.children[insertedRest] = Node(k, len(text) - 1, newParent)
+                        newParent.children[childRest] = child
 
-                        currentNode.children[text[j]] = mid
+                        child.parent = newParent
+                        child.start = newParent.end + 1
+
+                        currentNode.children[text[j]] = newParent
                 # Caso não tenha nenhum nó que continue o sufixo, cria um novo nó com o restante. 
                 else:
                     currentNode.children[text[j]] = Node(j, len(text) - 1, currentNode)
