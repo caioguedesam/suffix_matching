@@ -21,6 +21,7 @@ def ParseGenome(genome) -> str:
 # Retorna a maior substring que se repete no texto, junto com sua posição no texto
 # e o número de ocorrências.
 def GetLongestRepeatedSubstring(text):
+    PrintTimeAndMemoryAtInstant('Antes de ler e armazenar o arquivo')
     # Criando árvore de sufixos.
     t = tree.Tree(text)
     PrintTimeAndMemoryAtInstant('Após construção da árvore de sufixos do texto')
@@ -31,11 +32,10 @@ def GetLongestRepeatedSubstring(text):
     PrintTimeAndMemoryAtInstant('Após encontrar a maior substring repetida')
     return result
 
-PrintTimeAndMemoryAtInstant('Antes de ler e armazenar o arquivo')
-filePath = 'sarscov2.fasta'
-if(len(sys.argv) > 1):
-    filePath = sys.argv[1]
+def TestCase(filePath = 'sarscov2.fasta'):
+    print('Caso de teste: {0}'.format(filePath))
+    file = open(filePath, "r")
+    genomeParsed = ParseGenome(file.read())
+    print(str(GetLongestRepeatedSubstring(genomeParsed)))
 
-file = open(filePath, "r")
-genomeParsed = ParseGenome(file.read())
-print(str(GetLongestRepeatedSubstring(genomeParsed)))
+TestCase(sys.argv[1])

@@ -1,0 +1,11 @@
+Caso de teste: tests/test6.fasta
+Antes de ler e armazenar o arquivo:
++++ Tempo total:      0.000 segundos
++++ Memória utilizada:      4.102 megabytes
+Após construção da árvore de sufixos do texto:
++++ Tempo total:      0.169 segundos
++++ Memória utilizada:      4.461 megabytes
+Após encontrar a maior substring repetida:
++++ Tempo total:      0.190 segundos
++++ Memória utilizada:      4.462 megabytes
+['GGTTTCGTCCG', 197, 207, 2]

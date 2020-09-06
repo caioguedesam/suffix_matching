@@ -1,0 +1,11 @@
+Caso de teste: tests/test2.fasta
+Antes de ler e armazenar o arquivo:
++++ Tempo total:      0.000 segundos
++++ Memória utilizada:      4.118 megabytes
+Após construção da árvore de sufixos do texto:
++++ Tempo total:     37.365 segundos
++++ Memória utilizada:     13.089 megabytes
+Após encontrar a maior substring repetida:
++++ Tempo total:     37.469 segundos
++++ Memória utilizada:     13.090 megabytes
+['ATCAGACAACTACTATT', 3254, 3270, 2]

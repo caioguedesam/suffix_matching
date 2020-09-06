@@ -1,0 +1,11 @@
+Caso de teste: tests/test1.fasta (Cópia do sarscov2.fasta)
+Antes de ler e armazenar o arquivo:
++++ Tempo total:      0.000 segundos
++++ Memória utilizada:      4.131 megabytes
+Após construção da árvore de sufixos do texto:
++++ Tempo total:    125.394 segundos
++++ Memória utilizada:     20.610 megabytes
+Após encontrar a maior substring repetida:
++++ Tempo total:    125.586 segundos
++++ Memória utilizada:     20.611 megabytes
+['AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 29870, 29901, 2]
